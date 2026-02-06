@@ -1,2 +1,2 @@
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/logi443/packet/main/reset.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/logi443/reset/main/reset.sh)
