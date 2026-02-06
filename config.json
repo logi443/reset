@@ -44,7 +44,7 @@
       "settings": {
         "direction": "incoming",
         "filter-mode": "source-ip",
-        "ip": "kharejip/32"
+        "ip": "$KHAREJ_IP/32"
       }
     },
     {
@@ -60,7 +60,7 @@
       "type": "Layer3IpOverrider",
       "settings": {
         "mode": "source-ip",
-        "ipv4": "iranip"
+        "ipv4": "$IRAN_IP"
       },
       "next": "tcp_reset_on"
     },
@@ -77,7 +77,7 @@
       "type": "Layer3IpOverrider",
       "settings": {
         "mode": "dest-ip",
-        "ipv4": "kharejip"
+        "ipv4": "$KHAREJ_IP"
       },
       "next": "route1_writer"
     },
