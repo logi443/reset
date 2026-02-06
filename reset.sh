@@ -25,7 +25,7 @@ show_banner() {
     clear
     get_server_ip
     echo "================================================"
-    echo "            RESET TUNNEL - WATERWALL            "
+    echo "            RESET TUNNEL - MEYSAM            "
     echo "================================================"
     echo " Server IP : $SERVER_IP"
     echo "================================================"
