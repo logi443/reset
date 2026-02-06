@@ -1,0 +1,133 @@
+{
+  "name": "reset_tunnel_iran",
+  "nodes": [
+    {
+      "name": "input",
+      "type": "TcpListener",
+      "settings": {
+        "address": "0.0.0.0",
+        "port": [
+          23,
+          65535
+        ],
+        "nodelay": true
+      },
+      "next": "output"
+    },
+    {
+      "name": "output",
+      "type": "TcpConnector",
+      "settings": {
+        "nodelay": true,
+        "address": "10.0.0.2",
+        "port": "src_context->port"
+      }
+    },
+    {
+      "name": "tdev",
+      "type": "TunDevice",
+      "settings": {
+        "device-name": "tun0",
+        "device-ip": "10.0.0.1/24"
+      }
+    },
+    {
+      "name": "rdev",
+      "type": "RawDevice",
+      "settings": {
+        "mode": "injector"
+      }
+    },
+    {
+      "name": "cdev",
+      "type": "CaptureDevice",
+      "settings": {
+        "direction": "incoming",
+        "filter-mode": "source-ip",
+        "ip": "91.107.152.74/32"
+      }
+    },
+    {
+      "name": "route1_receiver",
+      "type": "Layer3Receiver",
+      "settings": {
+        "device": "tdev"
+      },
+      "next": "route1_source_changer"
+    },
+    {
+      "name": "route1_source_changer",
+      "type": "Layer3IpOverrider",
+      "settings": {
+        "mode": "source-ip",
+        "ipv4": "62.60.196.148"
+      },
+      "next": "tcp_reset_on"
+    },
+    {
+      "name": "tcp_reset_on",
+      "type": "Layer3TcpManipulator",
+      "settings": {
+        "bit-reset": "on"
+      },
+      "next": "route1_dest_setter"
+    },
+    {
+      "name": "route1_dest_setter",
+      "type": "Layer3IpOverrider",
+      "settings": {
+        "mode": "dest-ip",
+        "ipv4": "91.107.152.74"
+      },
+      "next": "route1_writer"
+    },
+    {
+      "name": "route1_writer",
+      "type": "Layer3Sender",
+      "settings": {
+        "device": "rdev"
+      }
+    },
+    {
+      "name": "route2_receiver",
+      "type": "Layer3Receiver",
+      "settings": {
+        "device": "cdev"
+      },
+      "next": "route2_source_changer"
+    },
+    {
+      "name": "route2_source_changer",
+      "type": "Layer3IpOverrider",
+      "settings": {
+        "mode": "source-ip",
+        "ipv4": "10.0.0.2"
+      },
+      "next": "tcp_reset_off"
+    },
+    {
+      "name": "tcp_reset_off",
+      "type": "Layer3TcpManipulator",
+      "settings": {
+        "bit-reset": "off"
+      },
+      "next": "route2_dest_setter"
+    },
+    {
+      "name": "route2_dest_setter",
+      "type": "Layer3IpOverrider",
+      "settings": {
+        "mode": "dest-ip",
+        "ipv4": "10.0.0.1"
+      },
+      "next": "route2_writer"
+    },
+    {
+      "name": "route2_writer",
+      "type": "Layer3Sender",
+      "settings": {
+        "device": "tdev"
+      }
+    }
+  ]
+}
