@@ -90,11 +90,11 @@ create_config_kharej() {
 # ---------------- INSTALL -------------------------
 download_and_install() {
     cd "$BASE_DIR" || exit 1
-    apt install -y curl unzip
+    apt update && apt install -y curl unzip
     curl -L -o "$ZIP_NAME" "$DOWNLOAD_URL"
     unzip -o "$ZIP_NAME"
     chmod +x Waterwall*
-    mv Waterwall* "$BIN_NAME"
+    mv -f Waterwall "$BIN_NAME"
 }
 
 create_service() {
